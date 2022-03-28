@@ -3,10 +3,11 @@
 #include <sys/file.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 
 #define DEFAULT_SIZE 1024
-
-void setBuf(FILE *src, FILE *dest, int bufSize);
+#define TMP_BUF_SIZE 4096
+#define MAX_LINE_SIZE 80
 
 int main(int argc, char *argv[])
 {   
@@ -22,22 +23,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "size of buf needs to be greater or equal to -1");
         exit(1);
     }
-    setBuf(bufSize);
-
-    char wordBuf[80];
-
-    while() {
-        
-    }
-
-    fclose(src);
-    fclose(dest);
-
-    return 0;
-}
-
-void setBuf(FILE *src, FILE *dest, int bufSize)
-{
+    
     switch(bufSize) {
         case -1:
             setvbuf(src, NULL, _IOLBF, DEFAULT_SIZE);
@@ -52,4 +38,30 @@ void setBuf(FILE *src, FILE *dest, int bufSize)
             setvbuf(dest, NULL, _IOFBF, bufSize);
             break;
     }
+
+    char buf[TMP_BUF_SIZE];
+    char nextChar;
+    int len = 0;
+    int pos = 0;
+
+    while(~fscanf(src, "%s", buf)) {
+        nextChar = fgetc(src);
+        len = strlen(buf);
+        if (pos + len > MAX_LINE_SIZE) {
+            fputc('\n', dest);
+            pos = 0;
+        }
+        fprintf(dest, "%s", buf);
+        if (nextChar != EOF)  // ignore EOF
+            fputc(nextChar, dest);
+            
+        pos += len + 1; // move forward because whitespace
+        if (nextChar == '\n') // reset the current position in line 
+            pos = 0;
+    }
+
+    fclose(src);
+    fclose(dest);
+
+    return 0;
 }
