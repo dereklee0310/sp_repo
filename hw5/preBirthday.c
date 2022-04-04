@@ -26,7 +26,7 @@ DT_UNKNOWN The file type could not be determined. 「U」
 int filetype[100];
 char fileSymbol[100];
 //準備統計目錄中到底有多少種檔案型別，如果有該型別在 filetype[X]上設定為 1，該型別的代表字放在 fileSymbol
-void initFileTypoe() {
+void initFileType() {
     for (int i=0; i< 100; i++) {
         filetype[i] = -1;
     }
@@ -36,7 +36,7 @@ void initFileTypoe() {
     fileSymbol[DT_DIR]='d';
     fileSymbol[DT_FIFO]='f';
     fileSymbol[DT_LNK]='l';
-    fileSymbol[DT_REG]='r';
+    fileSymbol[DT_REG]='-';
     fileSymbol[DT_SOCK]='s';
     fileSymbol[DT_UNKNOWN]='U';
 }
@@ -74,19 +74,26 @@ long size = 0;
     struct dirent* ent = readdir(dirp);
     while (ent != NULL) {
     //『這個目錄』及『上一層目錄』跳過不處理
-        if (strcmp(ent->d_name, "." )==0 || strcmp(ent->d_name, ".." )==0) {
+        if (strcmp(ent->d_name, "." )== 0 || strcmp(ent->d_name, ".." )== 0) {
             ent = readdir(dirp);
             continue;
         }
         //設定有這種檔案型別
         filetype[ent->d_type] = 1;
         //製造『路徑/名』
-        //如果使用者的輸入是「/」怎麼辦？，例如：「//home」會發生錯誤嗎？
+        //如果使用者的輸入是「/」怎麼辦？，例如：「//home」會發生錯誤嗎？ Ans: 不會
         char pathname[PATH_MAX]="";
         strcat(pathname, path);
         strcat(pathname, "/");
         strcat(pathname, ent->d_name);
         printf("%s", pathname);
+
+        // skip the file that doesn't exist
+        if(access(pathname ,F_OK) != 0) {
+            ent = readdir(dirp);
+            continue;
+        }
+
         //如果是目錄
         if (ent->d_type == DT_REG) {
             //遞迴呼叫
@@ -103,7 +110,7 @@ long size = 0;
 int main(int argc, char *argv[])
 {   
     setuid(geteuid());
-    initFileTypoe();
+    initFileType();
     unsigned long long size = myCountDir(argv[1]);
 
     puts("授課老師 (羅習五)的生日是: 1990/04/10");
@@ -111,7 +118,8 @@ int main(int argc, char *argv[])
     printf("檔案種類: ");
     for(unsigned i = 0; i < 100; i++)
         if(filetype[i] != -1)
-            printf("%c\n", fileSymbol[i]);
+            printf("%c", fileSymbol[i]);
+    putchar('\n');
 
 
     return 0;
