@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "size of buf needs to be greater or equal to -1");
         exit(1);
     }
-    
+    // set buf to NULL, the system will automatically allocate it
     switch(bufSize) {
         case -1:
             setvbuf(src, NULL, _IOLBF, DEFAULT_SIZE);
@@ -48,8 +48,8 @@ int main(int argc, char *argv[])
         nextChar = fgetc(src);
         len = strlen(buf);
         if (pos + len > MAX_LINE_SIZE) {
-            fputc('\n', dest);
-            pos = 0;
+            fputc('\n', dest); // jump into next line
+            pos = 0; // reset the current position in line 
         }
         fprintf(dest, "%s", buf);
         if (nextChar != EOF)  // ignore EOF
