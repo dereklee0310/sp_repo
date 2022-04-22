@@ -10,4 +10,4 @@ my_lib.o: my_lib.c my_lib.h
 	gcc -c my_lib.c
 
 clean:
-	rm -rf *.o lib_driver input output
+	rm -rf *.o lib_driver input output myHole2

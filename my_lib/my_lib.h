@@ -8,18 +8,22 @@
 
 #define SWAP(x, y) int tmp = x; x = y; y = tmp;
 
-char *parseString(char *string);
+// char **parseString(char *string);
 
 void rmNewLine(char *string);
 
-char *numerToMode(unsigned int modeNumber);
+// char *numerToMode(unsigned int modeNumber);
 
-char *getTimeStr(void);
+// char *getTimeStr(void);
+
+char *readFile(char *filename, size_t bufSize);
 
 void writeFile(char *filename, size_t bufSize);
 
-void copyFile(char *inputFile, char *outputFile, size_t bufSize);
+void copyFile(char *inFilename, char *outFilename, size_t bufSize);
 
-void showFile(char *inputFile, size_t bufSize);
+void copyHoleFile(char *inFilename, char *outFilename, size_t bufSize);
+
+void showFile(char *filename, size_t bufSize);
 
 #endif
