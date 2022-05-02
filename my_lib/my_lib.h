@@ -6,7 +6,8 @@
 // #define NEWLINE '\n'
 // #define NULL_CHARACTER '\0'
 
-#define SWAP(x, y) int tmp = x; x = y; y = tmp;
+
+#define SWAP(x, y) { x ^= y ^= x ^= y; };
 
 // char **parseString(char *string);
 

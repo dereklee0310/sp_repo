@@ -19,12 +19,6 @@
 
 #define NDEBUG // switch
 
-void foo(char *string)
-{
-    strtok(string, " ");
-    fprintf(stderr, "success\n");
-};
-
 int main(int argc, char **argv) {
     char buf[BUF_SIZE];
     char inFilename[BUF_SIZE];
@@ -80,13 +74,22 @@ int main(int argc, char **argv) {
 
     puts("----------------------------------------");
 
-    puts("process end! :)");
-
     free(tmp);
-    #endif
 
-    char t[] = "1 2 3 4 5";
-    foo(t);
+    #endif
+    
+    puts("*now calling SWAP() to swap value of a and b...*");
+    sleep(3);
+    
+    int a = 5, b = 3;
+    printf("before: a = %d, b = %d\n", a, b);
+    SWAP(a, b);
+    printf("after : a = %d, b = %d\n", a, b);
+
+
+    puts("----------------------------------------");
+
+    puts("process end! :)");
 
     return 0;
 }

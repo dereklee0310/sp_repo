@@ -9,10 +9,10 @@
 #include <sched.h>
 #include <pthread.h>
 
-#define ADJUSTMENT  5
-#define ALARM_TIME  5
+#define ADJUSTMENT  5 // value of nice argument
+#define ALARM_TIME  5 // runtime of while loop
 
-unsigned long long cnt = 0;
+unsigned long long cnt = 0; // cnt of while loop
 
 void sigHandler(int sig);
 
@@ -53,11 +53,3 @@ void sigHandler(int sig)
     printf("%10llu\n", cnt); // width: 10, align: right 
     exit(EXIT_SUCCESS);
 }
-
-
-/*  
- * reference:
- * https://blog.csdn.net/Z_Stand/article/details/107883684
- * https://www.cntofu.com/book/46/linux_system/linuxxi_tong_bian_cheng_zhi_xin_hao_ff08_san_ff09_.md
- * https://tw.gitbook.net/unix_system_calls/alarm.html
- */
