@@ -9,24 +9,16 @@ usage: ./NoZombie 10000
 
 void manyChild(int num) {
     int i, pid;
-    for (int i=0; i<num; i++) {
-        pid = vfork();
-        // child 立即結束
+    for (int i = 0; i < num; i++) {
+        pid = fork();
         if (pid == 0) {
             /***************
              * modify here *
              ***************/
             sleep(i + 1); // i from 0 to 99
             exit(0);
-        }
-        // 如果是parent的話，就繼續執行for loop
-        if (pid != 0) {
-            // continue;
-            /***************
-             * modify here *
-             ***************/
-            int wstatus;
-            wait(&wstatus);
+        } else {
+            continue;
         }
     }
 }
@@ -42,11 +34,12 @@ int main(int argc, char** argv) {
     if (pid == 0) {
         manyChild(num);
         exit(0);
+    } else {
+        /***************
+         * modify here *
+         ***************/
+        int wstatus;
+        wait(&wstatus);
     }
-    /***************
-     * modify here *
-     ***************/
-    int wstatus;
-    wait(&wstatus);
     getchar();
 }
