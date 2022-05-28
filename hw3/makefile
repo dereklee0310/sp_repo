@@ -1,4 +1,5 @@
-all: fileperf
-	gcc -z lazy fileperf.c -o fileperf
+all: flock lockf
+	gcc flock.c -o flock
+	gcc lockf.c -o lockf
 clean:
-	rm fileperf destFile.txt output.txt
+	rm -f flock lockf flock.db lockf.db
